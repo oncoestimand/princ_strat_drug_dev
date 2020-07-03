@@ -11,6 +11,9 @@ output:
     toc_float:
       collapsed: yes
       smooth_scroll: yes
+  github_document: 
+    toc: true
+    toc_depth: 2
 bibliography: biblio.bib
 ---
 
