@@ -4,6 +4,7 @@ author: "Björn Bornkamp and Kaspar Rufibach"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output: 
   html_document:
+    keep_md: true
     toc: yes
     toc_depth: 2
     number_sections: true
