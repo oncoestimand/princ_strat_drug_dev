@@ -1,6 +1,6 @@
 # Example of a principal stratification estimation with corresponding estimation methods compared
 
-* [Principal stratification example](princ_strat_example.md)
+* [Principal stratification example](princ_strat_example.html)
 
 Authors: 
 
