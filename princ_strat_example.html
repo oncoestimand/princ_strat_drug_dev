@@ -1739,6 +1739,8 @@ with(dat, table(S1, X))</code></pre>
 ## S1    1   2   3   4
 ##   0  70  82 119  75
 ##   1  37  33  17  17</code></pre>
+<div id="overall-treatment-effect" class="section level2">
+<h2><span class="header-section-number">4.1</span> Overall treatment effect</h2>
 <pre class="r"><code>## overall treatment effect
 fit &lt;- survfit(Surv(Y, event) ~ Z, data = dat)
 ggsurvplot(fit, data = dat)</code></pre>
@@ -1795,7 +1797,11 @@ prettyCox(ov_tmt_s1)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>As expected, patients with <span class="math inline">\(S(1) = 1\)</span> have a shorter PFS on the treatment arm. The next question is: Does <span class="math inline">\(S\)</span> also impact the treatment effect vs placebo?</p>
+<p>As expected, patients with <span class="math inline">\(S(1) = 1\)</span> have a shorter PFS on the treatment arm.</p>
+</div>
+<div id="naive-analysis-vs-complete-placebo-group" class="section level2">
+<h2><span class="header-section-number">4.2</span> Naive analysis vs complete placebo group</h2>
+<p>The next question is: Does <span class="math inline">\(S\)</span> also impact the treatment effect vs placebo?</p>
 <pre class="r"><code>## naive analyses versus complete placebo group
 naive &lt;- coxph(Surv(Y, event) ~ Z, data = dat[(Z == 1 &amp; S1 == 1) | Z == 0])
 compl_placebo &lt;- coxph(Surv(Y, event) ~ Z, data = dat[(Z == 1 &amp; S1 == 0) | Z == 0])
@@ -1842,8 +1848,11 @@ prettyCox(naive)</code></pre>
 </tbody>
 </table>
 </div>
+</div>
 <div id="estimation-approaches-under-the-principal-ignorability-assumption" class="section level1">
 <h1><span class="header-section-number">5</span> Estimation approaches under the principal ignorability assumption</h1>
+<div id="regression-adjustment" class="section level2">
+<h2><span class="header-section-number">5.1</span> Regression adjustment</h2>
 <p>The first and simplest approach for analysing the data motivated by the principal ignorability assumption is to adjust for the confounders in a regression model. Validity of this approach relies on correctly specifying the regression model.</p>
 <pre class="r"><code>reg_adj &lt;- coxph(Surv(Y, event) ~ Z + X, data = dat[(Z == 1 &amp; S1 == 1) | Z == 0])
 reg_adj2 &lt;- coxph(Surv(Y, event) ~ Z + X, data = dat[(Z == 1 &amp; S1 == 0) | Z == 0])
@@ -1903,6 +1912,9 @@ prettyCox(reg_adj)</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="weighting" class="section level2">
+<h2><span class="header-section-number">5.2</span> Weighting</h2>
 <p>A slightly more complex estimation approach that does not make a parametric assumption on how to adjust for the confounder X (but an assumption on how <span class="math inline">\(S(1)\)</span> and X are related) is to utilize a weighting or multiple imputation approach.</p>
 <pre class="r"><code>## fit model for ADA occurence on treatment
 fit &lt;- glm(S1 ~ X, data = dat[Z == 1], family = binomial())
@@ -1979,8 +1991,11 @@ prettyCox(tmt_compl)</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>## the weighting analysis does not account for uncertainty in estimated weights
-## an alternative is a multiple imputation approach
+</div>
+<div id="multiple-imputation" class="section level2">
+<h2><span class="header-section-number">5.3</span> Multiple imputation</h2>
+<p>The analysis using weighting does not account for uncertainty in estimated weights. An alternative is multiple imputation.</p>
+<pre class="r"><code>## multiple imputation approach
 cf &lt;- coef(fit)
 cov_mat &lt;- vcov(fit)
 
@@ -2017,10 +2032,12 @@ vr2 &lt;- mean(loghr_vr[, 2]) + var(loghr[, 2])
 sqrt(vr1); sqrt(vr2)</code></pre>
 <pre><code>## [1] 0.193235</code></pre>
 <pre><code>## [1] 0.09006709</code></pre>
-<pre class="r"><code>mi &lt;- c(colMeans(loghr), sqrt(vr1), sqrt(vr2))
-
-## results rather similar to weighting but larger standard errors
-approach &lt;- c(&quot;truth&quot;, &quot;naive&quot;, &quot;regr_adjustment&quot;, &quot;weighting&quot;, &quot;mi&quot;)
+<pre class="r"><code>mi &lt;- c(colMeans(loghr), sqrt(vr1), sqrt(vr2))</code></pre>
+</div>
+<div id="summary-of-various-estimators" class="section level2">
+<h2><span class="header-section-number">5.4</span> Summary of various estimators</h2>
+<p>Multiple imputation point estimate is similar to weighting, but now with larger standard errors.</p>
+<pre class="r"><code>approach &lt;- c(&quot;Truth&quot;, &quot;Naive&quot;, &quot;Regression adjustment&quot;, &quot;Weighting&quot;, &quot;Multiple imputation&quot;)
 est &lt;- c(coef(truth_S1)[1], coef(naive)[1], coef(reg_adj)[1], coef(weighting), mi[1])
 se &lt;- c(NA, sqrt(vcov(naive)), sqrt(vcov(reg_adj)[1, 1]), sqrt(vcov(weighting)[1, 1]), mi[3])
 tab &lt;- data.table(approach = approach, estimate = round(est, 3), se = round(se, 3), &quot;hazard ratio&quot; = round(exp(est), 3))
@@ -2036,38 +2053,39 @@ kable(tab)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">truth</td>
+<td align="left">Truth</td>
 <td align="right">-0.156</td>
 <td align="right">NA</td>
 <td align="right">0.855</td>
 </tr>
 <tr class="even">
-<td align="left">naive</td>
+<td align="left">Naive</td>
 <td align="right">-0.050</td>
 <td align="right">0.125</td>
 <td align="right">0.951</td>
 </tr>
 <tr class="odd">
-<td align="left">regr_adjustment</td>
+<td align="left">Regression adjustment</td>
 <td align="right">-0.154</td>
 <td align="right">0.126</td>
 <td align="right">0.858</td>
 </tr>
 <tr class="even">
-<td align="left">weighting</td>
+<td align="left">Weighting</td>
 <td align="right">-0.153</td>
 <td align="right">0.159</td>
 <td align="right">0.858</td>
 </tr>
 <tr class="odd">
-<td align="left">mi</td>
+<td align="left">Multiple imputation</td>
 <td align="right">-0.141</td>
 <td align="right">0.193</td>
 <td align="right">0.869</td>
 </tr>
 </tbody>
 </table>
-<p>Overall: Results using both regression adjustment as well as weighting approaches point towards the fact that the treatment effect in the subgroup for which <span class="math inline">\(S(1)=1\)</span> is a bit larger (smaller log-HR) and closer to the true effect, than compared to the effect based on the naive analysis versus the complete placebo group. This is because patients with <span class="math inline">\(S(1)=1\)</span> generally have a worse prognosis (independent on which treatment group they are).</p>
+<p>As an overall conclusion, results using both regression adjustment as well as weighting approaches point towards the fact that the treatment effect in the subgroup for which <span class="math inline">\(S(1)=1\)</span> is a bit larger (smaller log-HR) and closer to the true effect, than compared to the effect based on the naive analysis versus the complete placebo group. This is because patients with <span class="math inline">\(S(1)=1\)</span> generally have a worse prognosis (independent on which treatment group they are).</p>
+</div>
 </div>
 <div id="sensitivity-analysis" class="section level1">
 <h1><span class="header-section-number">6</span> Sensitivity analysis</h1>

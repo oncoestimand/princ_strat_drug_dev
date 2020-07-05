@@ -180,6 +180,7 @@ head(dat, n = 10)
 with(dat, table(S1, X))
 ```
 
+## Overall treatment effect
 
 ```{r plot, echo = TRUE}
 ## overall treatment effect
@@ -201,7 +202,11 @@ ov_tmt_s1 <- coxph(Surv(Y, event) ~ S1, data = dat[Z == 1])
 prettyCox(ov_tmt_s1)
 ```
 
-As expected, patients with $S(1) = 1$ have a shorter PFS on the treatment arm. The next question is: Does $S$ also impact the treatment effect vs placebo?
+As expected, patients with $S(1) = 1$ have a shorter PFS on the treatment arm. 
+
+## Naive analysis vs complete placebo group
+
+The next question is: Does $S$ also impact the treatment effect vs placebo?
 
 ```{r naive, echo = TRUE}
 ## naive analyses versus complete placebo group
@@ -212,6 +217,8 @@ prettyCox(compl_placebo)
 ```
 
 # Estimation approaches under the principal ignorability assumption
+
+## Regression adjustment
 
 The first and simplest approach for analysing the data motivated by
 the principal ignorability assumption is to adjust for the confounders
@@ -224,6 +231,8 @@ reg_adj2 <- coxph(Surv(Y, event) ~ Z + X, data = dat[(Z == 1 & S1 == 0) | Z == 0
 prettyCox(reg_adj)
 prettyCox(reg_adj2)
 ```
+
+## Weighting
 
 A slightly more complex estimation approach that does not make a
 parametric assumption on how to adjust for the confounder X (but an
@@ -267,9 +276,16 @@ dat2 <- rbind(dat[Z == 1 & S1 == 0], dat[Z == 0])
 wgts <- c(rep(1, nrow(dat[Z == 1 & S1 == 0])), wgts)
 tmt_compl <- coxph(Surv(Y, event) ~ Z, data = dat2, weights = wgts)
 prettyCox(tmt_compl)
+```
 
-## the weighting analysis does not account for uncertainty in estimated weights
-## an alternative is a multiple imputation approach
+## Multiple imputation
+
+The analysis using weighting does not account for uncertainty in estimated weights. An alternative is multiple imputation.
+
+
+```{r Multiple Imputation, echo = TRUE}
+
+## multiple imputation approach
 cf <- coef(fit)
 cov_mat <- vcov(fit)
 
@@ -303,16 +319,21 @@ vr1 <- mean(loghr_vr[, 1]) + var(loghr[, 1])
 vr2 <- mean(loghr_vr[, 2]) + var(loghr[, 2])
 sqrt(vr1); sqrt(vr2)
 mi <- c(colMeans(loghr), sqrt(vr1), sqrt(vr2))
+```
 
-## results rather similar to weighting but larger standard errors
-approach <- c("truth", "naive", "regr_adjustment", "weighting", "mi")
+## Summary of various estimators
+
+Multiple imputation point estimate is similar to weighting, but now with larger standard errors.
+
+```{r Summary estimates, echo = TRUE}
+approach <- c("Truth", "Naive", "Regression adjustment", "Weighting", "Multiple imputation")
 est <- c(coef(truth_S1)[1], coef(naive)[1], coef(reg_adj)[1], coef(weighting), mi[1])
 se <- c(NA, sqrt(vcov(naive)), sqrt(vcov(reg_adj)[1, 1]), sqrt(vcov(weighting)[1, 1]), mi[3])
 tab <- data.table(approach = approach, estimate = round(est, 3), se = round(se, 3), "hazard ratio" = round(exp(est), 3))
 kable(tab)
 ```
 
-Overall: Results using both regression adjustment as well as weighting
+As an overall conclusion, results using both regression adjustment as well as weighting
 approaches point towards the fact that the treatment effect in the
 subgroup for which $S(1)=1$ is a bit larger (smaller log-HR) and closer to
 the true effect, than compared to the effect based on the naive

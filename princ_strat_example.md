@@ -224,6 +224,7 @@ with(dat, table(S1, X))
 ##   1  37  33  17  17
 ```
 
+## Overall treatment effect
 
 
 ```r
@@ -268,7 +269,11 @@ Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value
 ---------  ------------  ---------------  -------------  ----------
 S1         0.12          1.13             [0.88, 1.45]   0.34      
 
-As expected, patients with $S(1) = 1$ have a shorter PFS on the treatment arm. The next question is: Does $S$ also impact the treatment effect vs placebo?
+As expected, patients with $S(1) = 1$ have a shorter PFS on the treatment arm. 
+
+## Naive analysis vs complete placebo group
+
+The next question is: Does $S$ also impact the treatment effect vs placebo?
 
 
 ```r
@@ -295,6 +300,8 @@ Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value
 Z          -0.17         0.85             [0.72, 0.99]   0.03      
 
 # Estimation approaches under the principal ignorability assumption
+
+## Regression adjustment
 
 The first and simplest approach for analysing the data motivated by
 the principal ignorability assumption is to adjust for the confounders
@@ -325,6 +332,8 @@ Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value
 ---------  ------------  ---------------  -------------  ----------
 Z          -0.18         0.83             [0.71, 0.97]   0.02      
 X          -0.29         0.75             [0.70, 0.81]   < 0.0001  
+
+## Weighting
 
 A slightly more complex estimation approach that does not make a
 parametric assumption on how to adjust for the confounder X (but an
@@ -389,9 +398,14 @@ Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value
 ---------  ------------  ---------------  -------------  ----------
 Z          -0.14         0.87             [0.74, 1.03]   0.10      
 
+## Multiple imputation
+
+The analysis using weighting does not account for uncertainty in estimated weights. An alternative is multiple imputation.
+
+
+
 ```r
-## the weighting analysis does not account for uncertainty in estimated weights
-## an alternative is a multiple imputation approach
+## multiple imputation approach
 cf <- coef(fit)
 cov_mat <- vcov(fit)
 
@@ -450,9 +464,15 @@ sqrt(vr1); sqrt(vr2)
 
 ```r
 mi <- c(colMeans(loghr), sqrt(vr1), sqrt(vr2))
+```
 
-## results rather similar to weighting but larger standard errors
-approach <- c("truth", "naive", "regr_adjustment", "weighting", "mi")
+## Summary of various estimators
+
+Multiple imputation point estimate is similar to weighting, but now with larger standard errors.
+
+
+```r
+approach <- c("Truth", "Naive", "Regression adjustment", "Weighting", "Multiple imputation")
 est <- c(coef(truth_S1)[1], coef(naive)[1], coef(reg_adj)[1], coef(weighting), mi[1])
 se <- c(NA, sqrt(vcov(naive)), sqrt(vcov(reg_adj)[1, 1]), sqrt(vcov(weighting)[1, 1]), mi[3])
 tab <- data.table(approach = approach, estimate = round(est, 3), se = round(se, 3), "hazard ratio" = round(exp(est), 3))
@@ -461,15 +481,15 @@ kable(tab)
 
 
 
-approach           estimate      se   hazard ratio
-----------------  ---------  ------  -------------
-truth                -0.156      NA          0.855
-naive                -0.050   0.125          0.951
-regr_adjustment      -0.154   0.126          0.858
-weighting            -0.153   0.159          0.858
-mi                   -0.141   0.193          0.869
+approach                 estimate      se   hazard ratio
+----------------------  ---------  ------  -------------
+Truth                      -0.156      NA          0.855
+Naive                      -0.050   0.125          0.951
+Regression adjustment      -0.154   0.126          0.858
+Weighting                  -0.153   0.159          0.858
+Multiple imputation        -0.141   0.193          0.869
 
-Overall: Results using both regression adjustment as well as weighting
+As an overall conclusion, results using both regression adjustment as well as weighting
 approaches point towards the fact that the treatment effect in the
 subgroup for which $S(1)=1$ is a bit larger (smaller log-HR) and closer to
 the true effect, than compared to the effect based on the naive
