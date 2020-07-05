@@ -1,7 +1,7 @@
 ---
 title : "Code examples for methodologies presented"
 author: "Björn Bornkamp and Kaspar Rufibach"
-date: "2020-07-03"
+date: "2020-07-05"
 output: 
   html_document:
     keep_md: true
