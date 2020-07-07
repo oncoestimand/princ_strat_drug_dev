@@ -11,7 +11,7 @@
 
 <meta name="author" content="Björn Bornkamp and Kaspar Rufibach" />
 
-<meta name="date" content="2020-07-05" />
+<meta name="date" content="2020-07-07" />
 
 <title>Code examples for methodologies presented</title>
 
@@ -1544,14 +1544,14 @@ div.tocify {
 
 <h1 class="title toc-ignore">Code examples for methodologies presented</h1>
 <h4 class="author">Björn Bornkamp and Kaspar Rufibach</h4>
-<h4 class="date">2020-07-05</h4>
+<h4 class="date">2020-07-07</h4>
 
 </div>
 
 
 <div id="purpose" class="section level1">
 <h1><span class="header-section-number">1</span> Purpose</h1>
-<p>This document accompanies <span class="citation">Bornkamp and et al. (2020)</span>. It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.</p>
+<p>This document accompanies <span class="citation">Bornkamp et al. (2020)</span>. It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.</p>
 </div>
 <div id="setup" class="section level1">
 <h1><span class="header-section-number">2</span> Setup</h1>
@@ -1577,7 +1577,8 @@ prettyCox &lt;- function(mod, dig.coef = 2, dig.p = 1){
 </div>
 <div id="generating-example-dataset" class="section level1">
 <h1><span class="header-section-number">3</span> Generating example dataset</h1>
-<p>In this section we generate a hypothetical example dataset to analyse. The dataset is loosely motivated by <span class="citation">Schmid et al. (2018)</span>, which reports results of a Phase 3 trial comparing the monoclonal antibody Atezolizumab versus placebo (both on top of chemotherapy) in terms of progression free survival (PFS). Survival functions of the two treatment arms are loosely motivated by Figure 2A in that paper. We assume that for some patients on the treatment arm anti-drug-antibodies (ADAs) were induced by the treatment. Interest then focuses on how presence of ADAs might impact the treatment effect versus placebo. This section can be skipped in case there is no interest in a detailed description on how the data were generated.</p>
+<p>In this section we generate a hypothetical example dataset to analyse. The dataset is loosely motivated by <span class="citation">Schmid et al. (2018)</span>, which reports results of a Phase 3 trial comparing the monoclonal antibody Atezolizumab versus placebo (both on top of chemotherapy) in terms of progression free survival (PFS). Survival functions of the two treatment arms are loosely motivated by Figure 2A in that paper. We assume that for some patients on the treatment arm anti-drug-antibodies (ADAs) were induced by the treatment. Interest then focuses on how presence of ADAs might impact the treatment effect versus placebo. Note that we assume here that the ADA status is available instantaneously after treatment start for every patient and before any potential PFS event. There might be events before the intercurrent event occurs which might make observation of the intercurrent event status impossible. Please consult the paper on how to perform estimation in these more challenging situations.</p>
+<p>This section can be skipped in case there is no interest in a detailed description on how the data were generated.</p>
 <p>We assume in this simulated example that the principal ignorability assumption is fulfilled and that there is one main confounder, which is a prognostic score <span class="math inline">\(X\)</span> with 4 equally likely categories (<span class="math inline">\(X = 1, 2, 3, 4\)</span>). <span class="math inline">\(X\)</span> has a strong impact on the potential PFS outcomes <span class="math inline">\(Y(0)\)</span> and <span class="math inline">\(Y(1)\)</span> as well as occurence of ADA on the treatment group <span class="math inline">\(S(1)\)</span>. For all patients we simulate all potential outcomes, <span class="math inline">\(Y(0)\)</span>, <span class="math inline">\(Y(1)\)</span> and <span class="math inline">\(S(1)\)</span>. Note that <span class="math inline">\(S(0) \equiv 0\)</span>, i.e. ADA cannot occurr on the control arm.</p>
 <div id="assess-true-effects---population-dataset" class="section level2">
 <h2><span class="header-section-number">3.1</span> Assess “true” effects - population dataset</h2>
@@ -2089,7 +2090,7 @@ kable(tab)</code></pre>
 </div>
 <div id="sensitivity-analysis" class="section level1">
 <h1><span class="header-section-number">6</span> Sensitivity analysis</h1>
-<p>As discussed in <span class="citation">Bornkamp and et al. (2020)</span>, the principal ignorability assumption is unverifiable. In this section we propose a sensitivity analysis. The essential information missing for the analysis of interest is how <span class="math inline">\(Y(0) | S(1) = 1\)</span> and <span class="math inline">\(Y(0) | S(1) = 0\)</span> are related to each other, i.e. what impact does <span class="math inline">\(S(1)\)</span> have on <span class="math inline">\(Y(0)\)</span>. As <span class="math inline">\(S(1)\)</span> and <span class="math inline">\(Y(0)\)</span> are not jointly observed this is unknown.</p>
+<p>As discussed in <span class="citation">Bornkamp et al. (2020)</span>, the principal ignorability assumption is unverifiable. In this section we propose a sensitivity analysis. The essential information missing for the analysis of interest is how <span class="math inline">\(Y(0) | S(1) = 1\)</span> and <span class="math inline">\(Y(0) | S(1) = 0\)</span> are related to each other, i.e. what impact does <span class="math inline">\(S(1)\)</span> have on <span class="math inline">\(Y(0)\)</span>. As <span class="math inline">\(S(1)\)</span> and <span class="math inline">\(Y(0)\)</span> are not jointly observed this is unknown.</p>
 <p>Here we propose a sensitivity analysis where we impute <span class="math inline">\(S(1)\)</span> on the placebo arm. This will result in a specific HR quantifiying the effect that <span class="math inline">\(S(1)\)</span> might have on <span class="math inline">\(Y(0)\)</span>. Then we plot the HR of <span class="math inline">\(S(1)\)</span> on <span class="math inline">\(Y(0)\)</span> versus log(HR) in the subgroup of interest.</p>
 <p>The idea of this analysis is as follows:</p>
 <ul>
@@ -2153,7 +2154,7 @@ legend(&quot;bottomleft&quot;, c(&quot;S(1) = 1&quot;, &quot;S(1) = 0&quot;, &qu
 <h1>References</h1>
 <div id="refs" class="references">
 <div id="ref-bornkamp_20">
-<p>Bornkamp, B, and et al. 2020. “Principal Stratum Strategy in Drug Development: Relevant?” Industry Working Group &quot;Estimands in Oncology&quot;.</p>
+<p>Bornkamp, B., K. Rufibach, J. Lin, D. Mehrotra, S. Roychoudhury, and M. Wolbers. 2020. “Principal Stratum Strategy: Potential Role in Drug Development.” Industry Working Group &quot;Estimands in Oncology&quot;. <a href="www.oncoestimand.org">www.oncoestimand.org</a>.</p>
 </div>
 <div id="ref-schmid_18">
 <p>Schmid, Peter, Sylvia Adams, Hope S Rugo, Andreas Schneeweiss, Carlos H Barrios, Hiroji Iwata, Véronique Diéras, et al. 2018. “Atezolizumab and Nab-Paclitaxel in Advanced Triple-Negative Breast Cancer.” <em>The New England Journal of Medicine</em> 379: 2108–21. <a href="https://doi.org/10.1056/NEJMoa1809615">https://doi.org/10.1056/NEJMoa1809615</a>.</p>

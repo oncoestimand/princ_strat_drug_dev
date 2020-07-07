@@ -56,14 +56,23 @@ prettyCox <- function(mod, dig.coef = 2, dig.p = 1){
 # Generating example dataset
 
 In this section we generate a hypothetical example dataset to
-analyse. The dataset is loosely motivated by @schmid_18, which reports results of a Phase 3 trial comparing the
-monoclonal antibody Atezolizumab versus placebo (both on top of
-chemotherapy) in terms of progression free survival (PFS). Survival functions of the two treatment arms are loosely motivated by Figure 2A in
-that paper. We assume that for some patients on the treatment arm
-anti-drug-antibodies (ADAs) were induced by the treatment. Interest then focuses on
-how presence of ADAs might impact the treatment effect versus
-placebo. This section can be skipped in case there is no interest in a
-detailed description on how the data were generated.
+analyse. The dataset is loosely motivated by @schmid_18, which reports
+results of a Phase 3 trial comparing the monoclonal antibody
+Atezolizumab versus placebo (both on top of chemotherapy) in terms of
+progression free survival (PFS). Survival functions of the two
+treatment arms are loosely motivated by Figure 2A in that paper. We
+assume that for some patients on the treatment arm
+anti-drug-antibodies (ADAs) were induced by the treatment. Interest
+then focuses on how presence of ADAs might impact the treatment effect
+versus placebo. Note that we assume here that the ADA status is
+available instantaneously after treatment start for every patient and
+before any potential PFS event.  There might be events before the
+intercurrent event occurs which might make observation of the
+intercurrent event status impossible. Please consult the paper on how
+to perform estimation in these more challenging situations.
+
+This section can be skipped in case there is no interest in a detailed
+description on how the data were generated.
 
 We assume in this simulated example that the principal ignorability
 assumption is fulfilled and that there is one main confounder, which
