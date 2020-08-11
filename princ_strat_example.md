@@ -1,7 +1,7 @@
 ---
 title : "Code examples for methodologies presented"
 author: "Björn Bornkamp and Kaspar Rufibach"
-date: "2020-07-07"
+date: "2020-08-11"
 output: 
   html_document:
     keep_md: true
@@ -19,9 +19,7 @@ bibliography: biblio.bib
 
 # Purpose
 
-This document accompanies @bornkamp_20. It provides an implementation
-of different analysis methods for principal stratum estimands
-motivated by the principal ignorability assumption. In addition an
+This document accompanies @bornkamp_20. The accompanying github repository is available [here](https://github.com/oncoestimand/princ_strat_drug_dev). It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an
 idea for a sensitivity analysis is proposed. In this document we focus
 on a time-to-event endpoint as they are currently mostly performed
 (i.e., based on the Cox model). Some of the analyses presented here
@@ -143,7 +141,7 @@ prettyCox(truth_S1)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.16         0.86             [0.85, 0.86]   < 0.0001  
+Z          -0.16         0.85             [0.85, 0.86]   < 0.0001  
 X          -0.52         0.59             [0.59, 0.60]   < 0.0001  
 
 ```r
@@ -154,7 +152,7 @@ prettyCox(truth_S0)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.41         0.66             [0.66, 0.66]   < 0.0001  
+Z          -0.41         0.66             [0.66, 0.67]   < 0.0001  
 X          -0.52         0.60             [0.59, 0.60]   < 0.0001  
 
 The results from the model coefficients are as expected: We see an overall treatment effect that is attenuated in ADA+ patients.
@@ -208,17 +206,17 @@ head(dat, n = 10)
 ```
 
 ```
-##               Y Z X S1 event
-##  1:  8.96307424 1 3  0     1
-##  2:  1.11133216 1 1  1     0
-##  3: 27.93173650 1 3  0     1
-##  4:  0.50492109 1 1  1     1
-##  5:  1.30322001 1 1  0     0
-##  6: 17.23821049 1 2  0     1
-##  7:  2.92834128 1 4  1     0
-##  8:  0.04945228 1 1  0     1
-##  9:  2.24328958 1 4  0     1
-## 10:  9.15981609 0 3 NA     0
+##              Y Z X S1 event
+##  1:  4.4599853 0 3 NA     1
+##  2:  0.3513939 1 1  0     1
+##  3:  8.8956530 1 3  0     1
+##  4:  1.7104268 0 1 NA     0
+##  5:  1.7938068 1 1  1     1
+##  6:  0.2493940 1 2  1     1
+##  7:  3.2460434 1 4  0     1
+##  8:  5.0429417 1 1  0     1
+##  9:  7.8877485 1 4  0     1
+## 10: 10.6985863 1 3  0     1
 ```
 
 ```r
@@ -229,8 +227,8 @@ with(dat, table(S1, X))
 ```
 ##    X
 ## S1    1   2   3   4
-##   0  70  82 119  75
-##   1  37  33  17  17
+##   0  73  78 103  94
+##   1  38  31  18  15
 ```
 
 ## Overall treatment effect
@@ -264,7 +262,7 @@ prettyCox(ov_tmt)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.14         0.87             [0.75, 1.00]   0.05      
+Z          -0.22         0.81             [0.70, 0.93]   0.0038    
 
 ```r
 ## analysis within subgroup on treatment arm
@@ -276,7 +274,7 @@ prettyCox(ov_tmt_s1)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-S1         0.12          1.13             [0.88, 1.45]   0.34      
+S1         0.28          1.32             [1.03, 1.69]   0.03      
 
 As expected, patients with $S(1) = 1$ have a shorter PFS on the treatment arm. 
 
@@ -296,7 +294,7 @@ prettyCox(naive)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.05         0.95             [0.74, 1.22]   0.69      
+Z          0.005         1.01             [0.79, 1.28]   0.97      
 
 ```r
 prettyCox(compl_placebo)
@@ -306,7 +304,7 @@ prettyCox(compl_placebo)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.17         0.85             [0.72, 0.99]   0.03      
+Z          -0.28         0.76             [0.65, 0.89]   0.00053   
 
 # Estimation approaches under the principal ignorability assumption
 
@@ -328,8 +326,8 @@ prettyCox(reg_adj)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.15         0.86             [0.67, 1.10]   0.22      
-X          -0.28         0.76             [0.69, 0.82]   < 0.0001  
+Z          -0.17         0.84             [0.66, 1.08]   0.18      
+X          -0.35         0.70             [0.64, 0.77]   < 0.0001  
 
 ```r
 prettyCox(reg_adj2)
@@ -339,8 +337,8 @@ prettyCox(reg_adj2)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.18         0.83             [0.71, 0.97]   0.02      
-X          -0.29         0.75             [0.70, 0.81]   < 0.0001  
+Z          -0.29         0.75             [0.64, 0.88]   0.00029   
+X          -0.36         0.70             [0.65, 0.75]   < 0.0001  
 
 ## Weighting
 
@@ -368,7 +366,7 @@ prettyCox(weighting)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.15         0.86             [0.63, 1.17]   0.33      
+Z          -0.13         0.88             [0.69, 1.12]   < 0.0001  
 
 ```r
 ## can also produce a weighted Kaplan-Meier estimate for patients with S1
@@ -405,7 +403,7 @@ prettyCox(tmt_compl)
 
 Variable   Coefficient   HR = exp(coef)   95\% CI        $p$-value 
 ---------  ------------  ---------------  -------------  ----------
-Z          -0.14         0.87             [0.74, 1.03]   0.10      
+Z          -0.24         0.79             [0.67, 0.92]   < 0.0001  
 
 ## Multiple imputation
 
@@ -446,7 +444,7 @@ colMeans(loghr)
 ```
 
 ```
-## [1] -0.1405004 -0.1425921
+## [1] -0.1278282 -0.2395835
 ```
 
 ```r
@@ -454,7 +452,7 @@ exp(colMeans(loghr))
 ```
 
 ```
-## [1] 0.8689233 0.8671077
+## [1] 0.8800045 0.7869556
 ```
 
 ```r
@@ -464,11 +462,11 @@ sqrt(vr1); sqrt(vr2)
 ```
 
 ```
-## [1] 0.193235
+## [1] 0.1919157
 ```
 
 ```
-## [1] 0.09006709
+## [1] 0.08904266
 ```
 
 ```r
@@ -492,11 +490,11 @@ kable(tab)
 
 approach                 estimate      se   hazard ratio
 ----------------------  ---------  ------  -------------
-Truth                      -0.156      NA          0.855
-Naive                      -0.050   0.125          0.951
-Regression adjustment      -0.154   0.126          0.858
-Weighting                  -0.153   0.159          0.858
-Multiple imputation        -0.141   0.193          0.869
+Truth                      -0.157      NA          0.855
+Naive                       0.005   0.124          1.005
+Regression adjustment      -0.171   0.126          0.843
+Weighting                  -0.126   0.123          0.882
+Multiple imputation        -0.128   0.192          0.880
 
 As an overall conclusion, results using both regression adjustment as well as weighting
 approaches point towards the fact that the treatment effect in the
