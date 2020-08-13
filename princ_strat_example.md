@@ -1,7 +1,7 @@
 ---
 title : "Code examples for methodologies presented"
 author: "Björn Bornkamp and Kaspar Rufibach"
-date: "2020-08-11"
+date: "2020-08-13"
 output: 
   html_document:
     keep_md: true
@@ -19,7 +19,7 @@ bibliography: biblio.bib
 
 # Purpose
 
-This document accompanies @bornkamp_20. The accompanying github repository is available [here](https://github.com/oncoestimand/princ_strat_drug_dev). It provides an implementation of different analysis methods for principal stratum estimands
+This document accompanies @bornkamp_20. The preprint is available [here](https://arxiv.org/abs/2008.05406) and the accompanying github repository is available [here](https://github.com/oncoestimand/princ_strat_drug_dev). It provides an implementation of different analysis methods for principal stratum estimands
 motivated by the principal ignorability assumption. In addition an
 idea for a sensitivity analysis is proposed. In this document we focus
 on a time-to-event endpoint as they are currently mostly performed
