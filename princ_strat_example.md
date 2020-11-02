@@ -1,7 +1,7 @@
 ---
 title : "Code examples for methodologies presented"
 author: "Björn Bornkamp and Kaspar Rufibach"
-date: "2020-08-13"
+date: "2020-11-02"
 output: 
   html_document:
     keep_md: true
@@ -188,7 +188,8 @@ Y <- Y1 * Z + Y0 * (1 - Z)
 
 ## assume random censoring
 event <- sample(0:1, N, prob = c(0.2, 0.8), replace = TRUE)
-Y[as.logical(event)] <- runif(sum(event), 0, Y[as.logical(event)])
+Y[!as.logical(event)] <- runif(sum(!event), 0, Y[!as.logical(event)])
+
 S1[Z == 0] <- NA                  ## S1 not observed on control arm
 dat <- data.table(Y, Z, X, S1, event)
 ```
