@@ -11,7 +11,11 @@
 
 <meta name="author" content="Björn Bornkamp and Kaspar Rufibach" />
 
+<<<<<<< HEAD
 <meta name="date" content="2020-08-11" />
+=======
+<meta name="date" content="2020-11-02" />
+>>>>>>> ab95bf8167793ed576e66df6e2370dcca143997e
 
 <title>Code examples for methodologies presented</title>
 
@@ -1512,14 +1516,22 @@ div.tocify {
 
 <h1 class="title toc-ignore">Code examples for methodologies presented</h1>
 <h4 class="author">Björn Bornkamp and Kaspar Rufibach</h4>
+<<<<<<< HEAD
 <h4 class="date">2020-08-11</h4>
+=======
+<h4 class="date">2020-11-02</h4>
+>>>>>>> ab95bf8167793ed576e66df6e2370dcca143997e
 
 </div>
 
 
 <div id="purpose" class="section level1">
 <h1><span class="header-section-number">1</span> Purpose</h1>
+<<<<<<< HEAD
 <p>This document accompanies <span class="citation">Bornkamp et al. (2020)</span>. The accompanying github repository is available <a href="https://github.com/oncoestimand/princ_strat_drug_dev">here</a>. It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.</p>
+=======
+<p>This document accompanies <span class="citation">Bornkamp et al. (2020)</span>. The preprint is available <a href="https://arxiv.org/abs/2008.05406">here</a> and the accompanying github repository is available <a href="https://github.com/oncoestimand/princ_strat_drug_dev">here</a>. It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.</p>
+>>>>>>> ab95bf8167793ed576e66df6e2370dcca143997e
 </div>
 <div id="setup" class="section level1">
 <h1><span class="header-section-number">2</span> Setup</h1>
@@ -1680,7 +1692,8 @@ Y &lt;- Y1 * Z + Y0 * (1 - Z)
 
 ## assume random censoring
 event &lt;- sample(0:1, N, prob = c(0.2, 0.8), replace = TRUE)
-Y[as.logical(event)] &lt;- runif(sum(event), 0, Y[as.logical(event)])
+Y[!as.logical(event)] &lt;- runif(sum(!event), 0, Y[!as.logical(event)])
+
 S1[Z == 0] &lt;- NA                  ## S1 not observed on control arm
 dat &lt;- data.table(Y, Z, X, S1, event)</code></pre>
 </div>
@@ -2122,7 +2135,7 @@ legend(&quot;bottomleft&quot;, c(&quot;S(1) = 1&quot;, &quot;S(1) = 0&quot;, &qu
 <h1>References</h1>
 <div id="refs" class="references">
 <div id="ref-bornkamp_20">
-<p>Bornkamp, B., K. Rufibach, J. Lin, D. Mehrotra, S. Roychoudhury, and M. Wolbers. 2020. “Principal Stratum Strategy: Potential Role in Drug Development.” Industry Working Group &quot;Estimands in Oncology&quot;. <a href="www.oncoestimand.org">www.oncoestimand.org</a>.</p>
+<p>Bornkamp, B., K. Rufibach, J. Lin, Y. Liu, D. Mehrotra, S. Roychoudhury, H. Schmidli, Y. Shentu, and M. Wolbers. 2020. “Principal Stratum Strategy: Potential Role in Drug Development.” Industry Working Group &quot;Estimands in Oncology&quot;. <a href="https://arxiv.org/abs/2008.05406">https://arxiv.org/abs/2008.05406</a>.</p>
 </div>
 <div id="ref-schmid_18">
 <p>Schmid, Peter, Sylvia Adams, Hope S Rugo, Andreas Schneeweiss, Carlos H Barrios, Hiroji Iwata, Véronique Diéras, et al. 2018. “Atezolizumab and Nab-Paclitaxel in Advanced Triple-Negative Breast Cancer.” <em>The New England Journal of Medicine</em> 379: 2108–21. <a href="https://doi.org/10.1056/NEJMoa1809615">https://doi.org/10.1056/NEJMoa1809615</a>.</p>

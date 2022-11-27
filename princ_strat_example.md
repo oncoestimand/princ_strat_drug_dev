@@ -1,7 +1,11 @@
 ---
 title : "Code examples for methodologies presented"
 author: "Björn Bornkamp and Kaspar Rufibach"
+<<<<<<< HEAD
 date: "2020-08-11"
+=======
+date: "2020-11-02"
+>>>>>>> ab95bf8167793ed576e66df6e2370dcca143997e
 output: 
   html_document:
     keep_md: true
@@ -19,7 +23,12 @@ bibliography: biblio.bib
 
 # Purpose
 
+<<<<<<< HEAD
 This document accompanies @bornkamp_20. The accompanying github repository is available [here](https://github.com/oncoestimand/princ_strat_drug_dev). It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an
+=======
+This document accompanies @bornkamp_20. The preprint is available [here](https://arxiv.org/abs/2008.05406) and the accompanying github repository is available [here](https://github.com/oncoestimand/princ_strat_drug_dev). It provides an implementation of different analysis methods for principal stratum estimands
+motivated by the principal ignorability assumption. In addition an
+>>>>>>> ab95bf8167793ed576e66df6e2370dcca143997e
 idea for a sensitivity analysis is proposed. In this document we focus
 on a time-to-event endpoint as they are currently mostly performed
 (i.e., based on the Cox model). Some of the analyses presented here
@@ -187,7 +196,8 @@ Y <- Y1 * Z + Y0 * (1 - Z)
 
 ## assume random censoring
 event <- sample(0:1, N, prob = c(0.2, 0.8), replace = TRUE)
-Y[as.logical(event)] <- runif(sum(event), 0, Y[as.logical(event)])
+Y[!as.logical(event)] <- runif(sum(!event), 0, Y[!as.logical(event)])
+
 S1[Z == 0] <- NA                  ## S1 not observed on control arm
 dat <- data.table(Y, Z, X, S1, event)
 ```
