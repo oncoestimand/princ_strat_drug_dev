@@ -1,4 +1,11 @@
 # Example of a principal stratification estimation with corresponding estimation methods compared
 
-- This repository provides a [markdown file](princ_strat_example.html) to accompany the paper "Principal Stratum Strategy: Potential Role in Drug Development" by Bornkamp et al.
-- The paper is available as a [preprint on arxiv](https://arxiv.org/abs/2008.05406) and [published here](https://doi.org/10.1002/pst.2104).
+* [github repository](https://github.com/oncoestimand/princ_strat_drug_dev)
+* [markdown file](https://oncoestimand.github.io/princ_strat_drug_dev/princ_strat_example.html)
+* [preprint on arxiv](https://arxiv.org/abs/2008.05406)
+* [journal publication](https://doi.org/10.1002/pst.2104) 
+
+Authors: 
+
+* [Bjoern Bornkamp](mailto:bjoern.bornkamp@novartis.com)
+* [Kaspar Rufibach](mailto:kaspar.rufibach@roche.com)

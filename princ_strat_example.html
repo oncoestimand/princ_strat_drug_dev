@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Björn Bornkamp and Kaspar Rufibach">
-<meta name="dcterms.date" content="2022-11-27">
+<meta name="dcterms.date" content="2022-12-21">
 
 <title>Code examples for methodologies presented</title>
 <style>
@@ -122,10 +122,40 @@ div.csl-indent {
 
 </head>
 
-<body class="fullcontent">
+<body>
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose"><span class="toc-section-number">1</span>  Purpose</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="toc-section-number">2</span>  Setup</a></li>
+  <li><a href="#generating-example-dataset" id="toc-generating-example-dataset" class="nav-link" data-scroll-target="#generating-example-dataset"><span class="toc-section-number">3</span>  Generating example dataset</a>
+  <ul class="collapse">
+  <li><a href="#assess-true-effects---population-dataset" id="toc-assess-true-effects---population-dataset" class="nav-link" data-scroll-target="#assess-true-effects---population-dataset"><span class="toc-section-number">3.1</span>  Assess “true” effects - population dataset</a></li>
+  <li><a href="#clinical-trial-dataset" id="toc-clinical-trial-dataset" class="nav-link" data-scroll-target="#clinical-trial-dataset"><span class="toc-section-number">3.2</span>  Clinical trial dataset</a></li>
+  </ul></li>
+  <li><a href="#simple-analyses-of-clinical-trial-dataset" id="toc-simple-analyses-of-clinical-trial-dataset" class="nav-link" data-scroll-target="#simple-analyses-of-clinical-trial-dataset"><span class="toc-section-number">4</span>  Simple analyses of clinical trial dataset</a>
+  <ul class="collapse">
+  <li><a href="#overall-treatment-effect" id="toc-overall-treatment-effect" class="nav-link" data-scroll-target="#overall-treatment-effect"><span class="toc-section-number">4.1</span>  Overall treatment effect</a></li>
+  <li><a href="#naive-analysis-vs-complete-placebo-group" id="toc-naive-analysis-vs-complete-placebo-group" class="nav-link" data-scroll-target="#naive-analysis-vs-complete-placebo-group"><span class="toc-section-number">4.2</span>  Naive analysis vs complete placebo group</a></li>
+  </ul></li>
+  <li><a href="#estimation-approaches-under-the-principal-ignorability-assumption" id="toc-estimation-approaches-under-the-principal-ignorability-assumption" class="nav-link" data-scroll-target="#estimation-approaches-under-the-principal-ignorability-assumption"><span class="toc-section-number">5</span>  Estimation approaches under the principal ignorability assumption</a>
+  <ul class="collapse">
+  <li><a href="#regression-adjustment" id="toc-regression-adjustment" class="nav-link" data-scroll-target="#regression-adjustment"><span class="toc-section-number">5.1</span>  Regression adjustment</a></li>
+  <li><a href="#weighting" id="toc-weighting" class="nav-link" data-scroll-target="#weighting"><span class="toc-section-number">5.2</span>  Weighting</a></li>
+  <li><a href="#multiple-imputation" id="toc-multiple-imputation" class="nav-link" data-scroll-target="#multiple-imputation"><span class="toc-section-number">5.3</span>  Multiple imputation</a></li>
+  <li><a href="#summary-of-various-estimators" id="toc-summary-of-various-estimators" class="nav-link" data-scroll-target="#summary-of-various-estimators"><span class="toc-section-number">5.4</span>  Summary of various estimators</a></li>
+  </ul></li>
+  <li><a href="#sensitivity-analysis" id="toc-sensitivity-analysis" class="nav-link" data-scroll-target="#sensitivity-analysis"><span class="toc-section-number">6</span>  Sensitivity analysis</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">7</span>  References</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -147,7 +177,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 27, 2022</p>
+      <p class="date">December 21, 2022</p>
     </div>
   </div>
     
@@ -156,44 +186,45 @@ div.csl-indent {
 
 </header>
 
-<section id="purpose" class="level1">
-<h1>Purpose</h1>
+<section id="purpose" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Purpose</h1>
 <p>This document accompanies <span class="citation" data-cites="bornkamp_21">Björn Bornkamp et al. (<a href="#ref-bornkamp_21" role="doc-biblioref">2021</a>)</span>. The preprint is <span class="citation" data-cites="bornkamp_20">B. Bornkamp et al. (<a href="#ref-bornkamp_20" role="doc-biblioref">2020</a>)</span> and the accompanying github repository is available <a href="https://github.com/oncoestimand/princ_strat_drug_dev">here</a>. It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.</p>
 </section>
-<section id="setup" class="level1">
-<h1>Setup</h1>
+<section id="setup" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Setup</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">FALSE</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvtnorm)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reporttools)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># function to prettify output</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>prettyCox <span class="ot">&lt;-</span> <span class="cf">function</span>(mod, <span class="at">dig.coef =</span> <span class="dv">2</span>, <span class="at">dig.p =</span> <span class="dv">1</span>){</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  tab1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">cbind</span>(<span class="fu">summary</span>(mod)<span class="sc">$</span>conf.int), <span class="fu">summary</span>(mod)<span class="sc">$</span>coefficients)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  tab1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">cbind</span>(<span class="fu">apply</span>(tab1[, <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>)], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, disp, </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        dig.coef), <span class="fu">displayCI</span>(<span class="fu">as.matrix</span>(tab1[, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>)]), <span class="at">digit =</span> dig.coef), </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">formatPval</span>(tab1[, <span class="dv">9</span>], dig.p)))</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  tab1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">cbind</span>(<span class="fu">rownames</span>(<span class="fu">summary</span>(mod)<span class="sc">$</span>conf.int), tab1))</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(tab1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Variable"</span>, <span class="st">"Coefficient"</span>, <span class="st">"HR = exp(coef)"</span>, <span class="st">"95</span><span class="sc">\\</span><span class="st">% CI"</span>, </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"$p$-value"</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(tab1, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --------------------------------------------------------------</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># --------------------------------------------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"data.table"</span>, <span class="st">"ggplot2"</span>, <span class="st">"survival"</span>, <span class="st">"survminer"</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">"mvtnorm"</span>, <span class="st">"knitr"</span>, <span class="st">"reporttools"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(packages)){<span class="fu">library</span>(packages[i], <span class="at">character.only =</span> <span class="cn">TRUE</span>)}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># function to prettify output</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>prettyCox <span class="ot">&lt;-</span> <span class="cf">function</span>(mod, <span class="at">dig.coef =</span> <span class="dv">2</span>, <span class="at">dig.p =</span> <span class="dv">1</span>){</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  tab1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">cbind</span>(<span class="fu">summary</span>(mod)<span class="sc">$</span>conf.int), <span class="fu">summary</span>(mod)<span class="sc">$</span>coefficients)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  tab1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">cbind</span>(<span class="fu">apply</span>(tab1[, <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>)], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, disp, </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        dig.coef), <span class="fu">displayCI</span>(<span class="fu">as.matrix</span>(tab1[, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>)]), <span class="at">digit =</span> dig.coef), </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">formatPval</span>(tab1[, <span class="dv">9</span>], dig.p)))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  tab1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">cbind</span>(<span class="fu">rownames</span>(<span class="fu">summary</span>(mod)<span class="sc">$</span>conf.int), tab1))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(tab1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Variable"</span>, <span class="st">"Coefficient"</span>, <span class="st">"HR = exp(coef)"</span>, </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"95</span><span class="sc">\\</span><span class="st">% CI"</span>, <span class="st">"$p$-value"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(tab1, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="generating-example-dataset" class="level1">
-<h1>Generating example dataset</h1>
+<section id="generating-example-dataset" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Generating example dataset</h1>
 <p>In this section we generate a hypothetical example dataset to analyse. The dataset is loosely motivated by <span class="citation" data-cites="schmid_18">Schmid et al. (<a href="#ref-schmid_18" role="doc-biblioref">2018</a>)</span>, which reports results of a Phase 3 trial comparing the monoclonal antibody Atezolizumab versus placebo (both on top of chemotherapy) in terms of progression free survival (PFS). Survival functions of the two treatment arms are loosely motivated by Figure 2A in that paper. We assume that for some patients on the treatment arm anti-drug-antibodies (ADAs) were induced by the treatment. Interest then focuses on how presence of ADAs might impact the treatment effect versus placebo. Note that we assume here that the ADA status is available instantaneously after treatment start for every patient and before any potential PFS event. There might be events before the intercurrent event occurs which might make observation of the intercurrent event status impossible. Please consult the paper on how to perform estimation in these more challenging situations.</p>
 <p>This section can be skipped in case there is no interest in a detailed description on how the data were generated.</p>
 <p>We assume in this simulated example that the principal ignorability assumption is fulfilled and that there is one main confounder, which is a prognostic score <span class="math inline">\(X\)</span> with 4 equally likely categories (<span class="math inline">\(X = 1, 2, 3, 4\)</span>). <span class="math inline">\(X\)</span> has a strong impact on the potential PFS outcomes <span class="math inline">\(Y(0)\)</span> and <span class="math inline">\(Y(1)\)</span> as well as occurence of ADA on the treatment group <span class="math inline">\(S(1)\)</span>. For all patients we simulate all potential outcomes, <span class="math inline">\(Y(0)\)</span>, <span class="math inline">\(Y(1)\)</span> and <span class="math inline">\(S(1)\)</span>. Note that <span class="math inline">\(S(0) \equiv 0\)</span>, i.e.&nbsp;ADA cannot occurr on the control arm.</p>
-<section id="assess-true-effects---population-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="assess-true-effects---population-dataset">Assess “true” effects - population dataset</h2>
+<section id="assess-true-effects---population-dataset" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="assess-true-effects---population-dataset"><span class="header-section-number">3.1</span> Assess “true” effects - population dataset</h2>
 <p>In a first step and as a benchmark, we generate the “true” treatment effect for patients that are ADA+ in the treatment arm, i.e.&nbsp;those with <span class="math inline">\(S(1) = 1\)</span>. To this end, we simulate from a very large number of patients, the “population”.</p>
-<div class="cell" data-hash="princ_strat_example_cache/html/data generation population_e392f0123cf79c2c019e100433e8eca2">
+<div class="cell" data-hash="princ_strat_example_cache/html/data generation population_43205cd5ca2f63dbe5f247b060aebe2f">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## define model quantities</span></span>
@@ -223,23 +254,26 @@ div.csl-indent {
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, N <span class="sc">/</span> <span class="dv">2</span>), <span class="fu">rep</span>(<span class="dv">1</span>, N <span class="sc">/</span> <span class="dv">2</span>)))</span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="do">## generate S(1) for all patients</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>S1_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(a <span class="sc">*</span> X))   <span class="do">## with a = 0.5 --&gt; P(S(1) = 1) ~= 0.24</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, S1_prob)       <span class="do">## S1 more likely to occur for high disease severity</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="do">## with a = 0.5 --&gt; P(S(1) = 1) ~= 0.24</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>S1_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(a <span class="sc">*</span> X))   </span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="do">## generate Y(1) for all patients, depending on Z, X and S(1)</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y1_a <span class="sc">+</span> y1_b <span class="sc">*</span> S1 <span class="sc">+</span> y1_c <span class="sc">*</span> X))</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>Y0 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y0_a             <span class="sc">+</span> y0_b <span class="sc">*</span> X))</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> Y1 <span class="sc">*</span> Z <span class="sc">+</span> Y0 <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> Z)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="do">## add uniform random censoring</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>event <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, N, <span class="at">prob =</span> <span class="fu">c</span>(prob_cens, <span class="dv">1</span><span class="sc">-</span> prob_cens), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)] <span class="ot">&lt;-</span> <span class="fu">runif</span>(N <span class="sc">-</span> <span class="fu">sum</span>(event), <span class="dv">0</span>, Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)])</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>adat <span class="ot">&lt;-</span> <span class="fu">data.table</span>(Y, Z, X, S1, event)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="do">## display model coefficients</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>truth_S1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, <span class="at">data =</span> adat[S1 <span class="sc">==</span> <span class="dv">1</span>])</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>truth_S0 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, <span class="at">data =</span> adat[S1 <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="fu">prettyCox</span>(truth_S1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="do">## S1 more likely to occur for high disease severity</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, S1_prob)       </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="do">## generate Y(1) for all patients, depending on Z, X and S(1)</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y1_a <span class="sc">+</span> y1_b <span class="sc">*</span> S1 <span class="sc">+</span> y1_c <span class="sc">*</span> X))</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>Y0 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y0_a             <span class="sc">+</span> y0_b <span class="sc">*</span> X))</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> Y1 <span class="sc">*</span> Z <span class="sc">+</span> Y0 <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> Z)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="do">## add uniform random censoring</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>event <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, N, <span class="at">prob =</span> <span class="fu">c</span>(prob_cens, <span class="dv">1</span><span class="sc">-</span> prob_cens), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)] <span class="ot">&lt;-</span> <span class="fu">runif</span>(N <span class="sc">-</span> <span class="fu">sum</span>(event), <span class="dv">0</span>, Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)])</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>adat <span class="ot">&lt;-</span> <span class="fu">data.table</span>(Y, Z, X, S1, event)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="do">## display model coefficients</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>truth_S1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, <span class="at">data =</span> adat[S1 <span class="sc">==</span> <span class="dv">1</span>])</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>truth_S0 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, <span class="at">data =</span> adat[S1 <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="fu">prettyCox</span>(truth_S1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -302,10 +336,10 @@ div.csl-indent {
 </div>
 <p>The results from the model coefficients are as expected: We see an overall treatment effect that is attenuated in ADA+ patients.</p>
 </section>
-<section id="clinical-trial-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="clinical-trial-dataset">Clinical trial dataset</h2>
+<section id="clinical-trial-dataset" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="clinical-trial-dataset"><span class="header-section-number">3.2</span> Clinical trial dataset</h2>
 <p>Now we generate a clinical trial dataset from that same population, using the same approach as above.</p>
-<div class="cell" data-hash="princ_strat_example_cache/html/data generation_1901e7c5e2f2951eb95c42dabccb1a2b">
+<div class="cell" data-hash="princ_strat_example_cache/html/data generation_fe2db193915b108376b8608c2806755d">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">## number of patients</span></span>
@@ -319,25 +353,29 @@ div.csl-indent {
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, N <span class="sc">/</span> <span class="dv">2</span>), <span class="fu">rep</span>(<span class="dv">1</span>, N <span class="sc">/</span> <span class="dv">2</span>)))</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## generate S(1) for all patients</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>S1_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(a <span class="sc">*</span> X))   <span class="do">## with a = 0.5 --&gt; P(S(1) = 1) ~= 0.24</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, S1_prob)       <span class="do">## S1 more likely to occur for high disease severity</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">## generate Y(1) for all patients, depending on Z, X and S(1)</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y1_a <span class="sc">+</span> y1_b <span class="sc">*</span> S1 <span class="sc">+</span> y1_c <span class="sc">*</span> X))</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>Y0 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y0_a             <span class="sc">+</span> y0_b <span class="sc">*</span> X))</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> Y1 <span class="sc">*</span> Z <span class="sc">+</span> Y0 <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> Z)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="do">## assume random censoring</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>event <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, N, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)] <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">sum</span>(<span class="sc">!</span>event), <span class="dv">0</span>, Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)])</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## with a = 0.5 --&gt; P(S(1) = 1) ~= 0.24</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>S1_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(a <span class="sc">*</span> X))   </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="do">## S1 more likely to occur for high disease severity</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, S1_prob)       </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="do">## generate Y(1) for all patients, depending on Z, X and S(1)</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y1_a <span class="sc">+</span> y1_b <span class="sc">*</span> S1 <span class="sc">+</span> y1_c <span class="sc">*</span> X))</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>Y0 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="fu">exp</span>(y0_a             <span class="sc">+</span> y0_b <span class="sc">*</span> X))</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> Y1 <span class="sc">*</span> Z <span class="sc">+</span> Y0 <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> Z)</span>
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>S1[Z <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span>                  <span class="do">## S1 not observed on control arm</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.table</span>(Y, Z, X, S1, event)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="do">## assume random censoring</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>event <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, N, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)] <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">sum</span>(<span class="sc">!</span>event), <span class="dv">0</span>, Y[<span class="sc">!</span><span class="fu">as.logical</span>(event)])</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>S1[Z <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span>                  <span class="do">## S1 not observed on control arm</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.table</span>(Y, Z, X, S1, event)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
-<section id="simple-analyses-of-clinical-trial-dataset" class="level1">
-<h1>Simple analyses of clinical trial dataset</h1>
+<section id="simple-analyses-of-clinical-trial-dataset" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Simple analyses of clinical trial dataset</h1>
 <p>In this section we provide a quick overview of the dataset. Mimicking the “real world”, the data only contains information on the time to event outcome <span class="math inline">\(Y\)</span>, whether the event occured or was censored (event), the treatment indicator <span class="math inline">\(Z\)</span> as well as whether ADAs occurred (<span class="math inline">\(S\)</span>, only available on the treatment arm).</p>
 <p>In practice more confounders <span class="math inline">\(X\)</span> would be used in the analysis. There might also be more variables (e.g.&nbsp;stratfication factors) that one might use for adjustment in the outcome model.</p>
 <div class="cell" data-hash="princ_strat_example_cache/html/Basic summaries_7014a4ed42c2840f546391deb4db632d">
@@ -365,8 +403,8 @@ S1    1   2   3   4
   1  38  31  18  15</code></pre>
 </div>
 </div>
-<section id="overall-treatment-effect" class="level2">
-<h2 class="anchored" data-anchor-id="overall-treatment-effect">Overall treatment effect</h2>
+<section id="overall-treatment-effect" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="overall-treatment-effect"><span class="header-section-number">4.1</span> Overall treatment effect</h2>
 <div class="cell" data-hash="princ_strat_example_cache/html/plot_b6283613e56fb31705155ba857ed570a">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## overall treatment effect</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z, <span class="at">data =</span> dat)</span>
@@ -435,14 +473,16 @@ S1    1   2   3   4
 </div>
 <p>As expected, patients with <span class="math inline">\(S(1) = 1\)</span> have a shorter PFS on the treatment arm.</p>
 </section>
-<section id="naive-analysis-vs-complete-placebo-group" class="level2">
-<h2 class="anchored" data-anchor-id="naive-analysis-vs-complete-placebo-group">Naive analysis vs complete placebo group</h2>
+<section id="naive-analysis-vs-complete-placebo-group" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="naive-analysis-vs-complete-placebo-group"><span class="header-section-number">4.2</span> Naive analysis vs complete placebo group</h2>
 <p>The next question is: Does <span class="math inline">\(S\)</span> also impact the treatment effect vs placebo?</p>
-<div class="cell" data-hash="princ_strat_example_cache/html/naive_34e62ed0e064ae7824135f4163361b5a">
+<div class="cell" data-hash="princ_strat_example_cache/html/naive_72e84a48f1b41b89d5ba6b4b4f731736">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## naive analyses versus complete placebo group</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>naive <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z, <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>compl_placebo <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z, <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">prettyCox</span>(naive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>naive <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>compl_placebo <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z, </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">prettyCox</span>(naive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -491,15 +531,17 @@ S1    1   2   3   4
 </div>
 </section>
 </section>
-<section id="estimation-approaches-under-the-principal-ignorability-assumption" class="level1">
-<h1>Estimation approaches under the principal ignorability assumption</h1>
-<section id="regression-adjustment" class="level2">
-<h2 class="anchored" data-anchor-id="regression-adjustment">Regression adjustment</h2>
+<section id="estimation-approaches-under-the-principal-ignorability-assumption" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Estimation approaches under the principal ignorability assumption</h1>
+<section id="regression-adjustment" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="regression-adjustment"><span class="header-section-number">5.1</span> Regression adjustment</h2>
 <p>The first and simplest approach for analysing the data motivated by the principal ignorability assumption is to adjust for the confounders in a regression model. Validity of this approach relies on correctly specifying the regression model.</p>
-<div class="cell" data-hash="princ_strat_example_cache/html/Regression adjustment_aacba6bf2acbcd3fed9c2349e3af615d">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reg_adj <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>reg_adj2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prettyCox</span>(reg_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="princ_strat_example_cache/html/Regression adjustment_c5b8140f4c107de3c12c62dfaac167b4">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reg_adj <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>reg_adj2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(Y, event) <span class="sc">~</span> Z <span class="sc">+</span> X, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> dat[(Z <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> S1 <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|</span> Z <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">prettyCox</span>(reg_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -561,10 +603,10 @@ S1    1   2   3   4
 </div>
 </div>
 </section>
-<section id="weighting" class="level2">
-<h2 class="anchored" data-anchor-id="weighting">Weighting</h2>
-<p>A slightly more complex estimation approach that does not make a parametric assumption on how to adjust for the confounder X (but an assumption on how <span class="math inline">\(S(1)\)</span> and X are related) is to utilize a weighting or multiple imputation approach.</p>
-<div class="cell" data-hash="princ_strat_example_cache/html/Weighting approaches_2af95fc1ec10a60f71537589655e9f81">
+<section id="weighting" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="weighting"><span class="header-section-number">5.2</span> Weighting</h2>
+<p>A slightly more complex estimation approach that does not make a parametric assumption on how to adjust for the confounder <span class="math inline">\(X\)</span> (but an assumption on how <span class="math inline">\(S(1)\)</span> and X are related) is to utilize a weighting or multiple imputation approach.</p>
+<div class="cell" data-hash="princ_strat_example_cache/html/Weighting approaches_57d4e2cd243b3d40a9de3348b72a77ec">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## fit model for ADA occurence on treatment</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(S1 <span class="sc">~</span> X, <span class="at">data =</span> dat[Z <span class="sc">==</span> <span class="dv">1</span>], <span class="at">family =</span> <span class="fu">binomial</span>())</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -614,8 +656,9 @@ S1    1   2   3   4
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">fit0</span>(x), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">fit0_2</span>(x), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Z = 1, S(1) = 1"</span>, </span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Z = 0 (weighted by P(S(1) = 1))"</span>, <span class="st">"Z = 0 (all)"</span>),</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Z = 0 (weighted by P(S(1) = 1))"</span>, </span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Z = 0 (all)"</span>),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="princ_strat_example_files/figure-html/Weighting%20approaches-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -649,8 +692,8 @@ S1    1   2   3   4
 </div>
 </div>
 </section>
-<section id="multiple-imputation" class="level2">
-<h2 class="anchored" data-anchor-id="multiple-imputation">Multiple imputation</h2>
+<section id="multiple-imputation" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="multiple-imputation"><span class="header-section-number">5.3</span> Multiple imputation</h2>
 <p>The analysis using weighting does not account for uncertainty in estimated weights. An alternative is multiple imputation.</p>
 <div class="cell" data-hash="princ_strat_example_cache/html/Multiple Imputation_7996d39a0ea8249d6044b6aa7ab2bae5">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## multiple imputation approach</span></span>
@@ -701,18 +744,18 @@ S1    1   2   3   4
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">colMeans</span>(loghr), <span class="fu">sqrt</span>(vr1), <span class="fu">sqrt</span>(vr2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="summary-of-various-estimators" class="level2">
-<h2 class="anchored" data-anchor-id="summary-of-various-estimators">Summary of various estimators</h2>
+<section id="summary-of-various-estimators" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="summary-of-various-estimators"><span class="header-section-number">5.4</span> Summary of various estimators</h2>
 <p>Multiple imputation point estimate is similar to weighting, but now with larger standard errors.</p>
-<div class="cell" data-hash="princ_strat_example_cache/html/Summary estimates_ebfb038bbafeb95be4fc0f032b24e972">
+<div class="cell" data-hash="princ_strat_example_cache/html/Summary estimates_83dc2828843ef3e52a70bc6dd515f95a">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>approach <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Truth"</span>, <span class="st">"Naive"</span>, <span class="st">"Regression adjustment"</span>, <span class="st">"Weighting"</span>, </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Multiple imputation"</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">coef</span>(truth_S1)[<span class="dv">1</span>], <span class="fu">coef</span>(naive)[<span class="dv">1</span>], <span class="fu">coef</span>(reg_adj)[<span class="dv">1</span>], <span class="fu">coef</span>(weighting), </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>         mi[<span class="dv">1</span>])</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">coef</span>(truth_S1)[<span class="dv">1</span>], <span class="fu">coef</span>(naive)[<span class="dv">1</span>], <span class="fu">coef</span>(reg_adj)[<span class="dv">1</span>], </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">coef</span>(weighting), mi[<span class="dv">1</span>])</span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fu">sqrt</span>(<span class="fu">vcov</span>(naive)), <span class="fu">sqrt</span>(<span class="fu">vcov</span>(reg_adj)[<span class="dv">1</span>, <span class="dv">1</span>]), </span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sqrt</span>(<span class="fu">vcov</span>(weighting)[<span class="dv">1</span>, <span class="dv">1</span>]), mi[<span class="dv">3</span>])</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">approach =</span> approach, <span class="at">estimate =</span> <span class="fu">round</span>(est, <span class="dv">3</span>), <span class="at">se =</span> <span class="fu">round</span>(se, <span class="dv">3</span>), </span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"hazard ratio"</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">exp</span>(est), <span class="dv">3</span>))</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">approach =</span> approach, <span class="at">estimate =</span> <span class="fu">round</span>(est, <span class="dv">3</span>), </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">se =</span> <span class="fu">round</span>(se, <span class="dv">3</span>), <span class="st">"hazard ratio"</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">exp</span>(est), <span class="dv">3</span>))</span>
 <span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
@@ -762,8 +805,8 @@ S1    1   2   3   4
 <p>As an overall conclusion, results using both regression adjustment as well as weighting approaches point towards the fact that the treatment effect in the subgroup for which <span class="math inline">\(S(1)=1\)</span> is a bit larger (smaller log-HR) and closer to the true effect, than compared to the effect based on the naive analysis versus the complete placebo group. This is because patients with <span class="math inline">\(S(1)=1\)</span> generally have a worse prognosis (independent on which treatment group they are).</p>
 </section>
 </section>
-<section id="sensitivity-analysis" class="level1">
-<h1>Sensitivity analysis</h1>
+<section id="sensitivity-analysis" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Sensitivity analysis</h1>
 <p>As discussed in <span class="citation" data-cites="bornkamp_21">Björn Bornkamp et al. (<a href="#ref-bornkamp_21" role="doc-biblioref">2021</a>)</span>, the principal ignorability assumption is unverifiable. In this section we propose a sensitivity analysis. The essential information missing for the analysis of interest is how <span class="math inline">\(Y(0) | S(1) = 1\)</span> and <span class="math inline">\(Y(0) | S(1) = 0\)</span> are related to each other, i.e.&nbsp;what impact does <span class="math inline">\(S(1)\)</span> have on <span class="math inline">\(Y(0)\)</span>. As <span class="math inline">\(S(1)\)</span> and <span class="math inline">\(Y(0)\)</span> are not jointly observed this is unknown.</p>
 <p>Here we propose a sensitivity analysis where we impute <span class="math inline">\(S(1)\)</span> on the placebo arm. This will result in a specific HR quantifiying the effect that <span class="math inline">\(S(1)\)</span> might have on <span class="math inline">\(Y(0)\)</span>. Then we plot the HR of <span class="math inline">\(S(1)\)</span> on <span class="math inline">\(Y(0)\)</span> versus log(HR) in the subgroup of interest.</p>
 <p>The idea of this analysis is as follows:</p>
@@ -773,7 +816,7 @@ S1    1   2   3   4
 <li>Plot the log(HR) of treatment in <span class="math inline">\(S(1) = 1\)</span> and <span class="math inline">\(S(1) = 0\)</span> against the HR of <span class="math inline">\(S(1) = 1\)</span> vs <span class="math inline">\(S(1) = 0\)</span> on the control arm.</li>
 </ul>
 <p>To cover the range of different HRs a biased sampling is used.</p>
-<div class="cell" data-hash="princ_strat_example_cache/html/Sensitivity analysis_76deee9bd9f35145d3a69ded034a4553">
+<div class="cell" data-hash="princ_strat_example_cache/html/Sensitivity analysis_88744214aa15c92c321535fd957761cc">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dat_Z0 <span class="ot">&lt;-</span> dat[Z <span class="sc">==</span> <span class="dv">0</span>, ]</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>dat_Z1 <span class="ot">&lt;-</span> dat[Z <span class="sc">==</span> <span class="dv">1</span>, ]</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -787,8 +830,8 @@ S1    1   2   3   4
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>loghr <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow =</span> nSim, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>hr <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSim)</span>
 <span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSim){</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  pp <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, sm <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>, n1 <span class="sc">-</span> sm <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>) <span class="do">## sample from posterior for P(S1 = 1) </span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>                                              <span class="do">## with uniformative prior</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="do">## sample from posterior for P(S1 = 1) with uniformative prior</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  pp <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, sm <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>, n1 <span class="sc">-</span> sm <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>) </span>
 <span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>  <span class="do">## now randomly pick who would have S(1) = 1 in the control group to</span></span>
 <span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="do">## efficiently explore also "extreme" allocations sometimes favor</span></span>
@@ -821,22 +864,24 @@ S1    1   2   3   4
 <span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
 <span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(hr, loghr[, <span class="dv">1</span>], <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span>
 <span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(hr, loghr[, <span class="dv">2</span>], <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span>
-<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">coef</span>(fitoverall), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>) <span class="do">## overall treatment effect</span></span>
-<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>, <span class="fu">c</span>(<span class="st">"S(1) = 1"</span>, <span class="st">"S(1) = 0"</span>, <span class="st">"Overall"</span>), </span>
-<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>),</span>
-<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">19</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">lwd =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>), <span class="at">title =</span> <span class="st">"Population"</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a><span class="do">## overall treatment effect</span></span>
+<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">coef</span>(fitoverall), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>) </span>
+<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>, <span class="fu">c</span>(<span class="st">"S(1) = 1"</span>, <span class="st">"S(1) = 0"</span>, <span class="st">"Overall"</span>), </span>
+<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>),</span>
+<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">19</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">lwd =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>), <span class="at">title =</span> <span class="st">"Population"</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="princ_strat_example_files/figure-html/Sensitivity%20analysis-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>From this plot it can be seen that the treatment effect in the subpopulation with <span class="math inline">\(S(1) = 1\)</span> depends quite strongly on how much <span class="math inline">\(S(1)\)</span> impacts <span class="math inline">\(Y(0)\)</span>. The observed impact of <span class="math inline">\(S(1)\)</span> on <span class="math inline">\(Y(1)\)</span> (unadjusted for <span class="math inline">\(X\)</span>) lead to a log-HR of around 0.28 so that one might speculate that the impact of <span class="math inline">\(S(1)\)</span> on <span class="math inline">\(Y(0)\)</span> would be smaller than that. In this area from 0 to 0.28 one can still see that one would observe a benefit for the treatment group in the subgroup with <span class="math inline">\(S(1)=1\)</span>.</p>
 </section>
-<section id="references" class="level1 unnumbered">
+<section id="references" class="level1 unnumbered" data-number="7">
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">7 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-bornkamp_21" class="csl-entry" role="doc-biblioentry">
 Bornkamp, Björn, Kaspar Rufibach, Jianchang Lin, Yi Liu, Devan V. Mehrotra, Satrajit Roychoudhury, Heinz Schmidli, Yue Shentu, and Marcel Wolbers. 2021. <span>“Principal Stratum Strategy: Potential Role in Drug Development.”</span> <em>Pharmaceutical Statistics</em> 20 (4): 737–51. https://doi.org/<a href="https://doi.org/10.1002/pst.2104">https://doi.org/10.1002/pst.2104</a>.
 </div>

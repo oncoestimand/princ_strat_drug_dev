@@ -1,19 +1,15 @@
 ---
 title : "Code examples for methodologies presented"
 author: "Björn Bornkamp and Kaspar Rufibach"
-date: "`r format(Sys.time(), '%Y-%m-%d')`"
-output: 
-  html_document:
-    keep_md: true
-    toc: yes
-    toc_depth: 2
-    number_sections: true
-    toc_float:
-      collapsed: yes
-      smooth_scroll: yes
-  github_document: 
+date: 'Last modification: `r Sys.setlocale("LC_TIME", "C"); format(Sys.Date(), "%d %b %Y")`'
+format:
+  html:
     toc: true
-    toc_depth: 2
+    toc-depth: 2
+    toc-title: Contents
+    toc-location: left
+    number-sections: true
+    number-depth: 2
 bibliography: biblio.bib
 ---
 
@@ -25,13 +21,14 @@ This document accompanies @bornkamp_21. The preprint is @bornkamp_20 and the acc
 
 ```{r setup, results="hide", message=FALSE}
 knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
-library(data.table)
-library(ggplot2)
-library(survival)
-library(survminer)
-library(mvtnorm)
-library(knitr)
-library(reporttools)
+
+# --------------------------------------------------------------
+# Packages
+# --------------------------------------------------------------
+packages <- c("data.table", "ggplot2", "survival", "survminer", 
+              "mvtnorm", "knitr", "reporttools")
+
+for (i in 1:length(packages)){library(packages[i], character.only = TRUE)}
 
 # function to prettify output
 prettyCox <- function(mod, dig.coef = 2, dig.p = 1){
@@ -40,8 +37,8 @@ prettyCox <- function(mod, dig.coef = 2, dig.p = 1){
         dig.coef), displayCI(as.matrix(tab1[, c(3, 4)]), digit = dig.coef), 
         formatPval(tab1[, 9], dig.p)))
   tab1 <- data.frame(cbind(rownames(summary(mod)$conf.int), tab1))
-  colnames(tab1) <- c("Variable", "Coefficient", "HR = exp(coef)", "95\\% CI", 
-                      "$p$-value")
+  colnames(tab1) <- c("Variable", "Coefficient", "HR = exp(coef)", 
+                      "95\\% CI", "$p$-value")
   kable(tab1, row.names = FALSE)
 }
 ```
@@ -111,8 +108,11 @@ X <- sample(1:X_p, N, prob = rep(1 / X_p, X_p), replace = TRUE)
 Z <- sample(c(rep(0, N / 2), rep(1, N / 2)))
 
 ## generate S(1) for all patients
-S1_prob <- 1 / (1 + exp(a * X))   ## with a = 0.5 --> P(S(1) = 1) ~= 0.24
-S1 <- rbinom(N, 1, S1_prob)       ## S1 more likely to occur for high disease severity
+## with a = 0.5 --> P(S(1) = 1) ~= 0.24
+S1_prob <- 1 / (1 + exp(a * X))   
+
+## S1 more likely to occur for high disease severity
+S1 <- rbinom(N, 1, S1_prob)       
 
 ## generate Y(1) for all patients, depending on Z, X and S(1)
 Y1 <- rexp(N, exp(y1_a + y1_b * S1 + y1_c * X))
@@ -152,8 +152,12 @@ X <- sample(1:X_p, N, prob = rep(1 / X_p, X_p), replace = TRUE)
 Z <- sample(c(rep(0, N / 2), rep(1, N / 2)))
 
 ## generate S(1) for all patients
-S1_prob <- 1 / (1 + exp(a * X))   ## with a = 0.5 --> P(S(1) = 1) ~= 0.24
-S1 <- rbinom(N, 1, S1_prob)       ## S1 more likely to occur for high disease severity
+
+## with a = 0.5 --> P(S(1) = 1) ~= 0.24
+S1_prob <- 1 / (1 + exp(a * X))   
+
+## S1 more likely to occur for high disease severity
+S1 <- rbinom(N, 1, S1_prob)       
 
 ## generate Y(1) for all patients, depending on Z, X and S(1)
 Y1 <- rexp(N, exp(y1_a + y1_b * S1 + y1_c * X))
@@ -213,8 +217,10 @@ The next question is: Does $S$ also impact the treatment effect vs placebo?
 
 ```{r naive, echo = TRUE}
 ## naive analyses versus complete placebo group
-naive <- coxph(Surv(Y, event) ~ Z, data = dat[(Z == 1 & S1 == 1) | Z == 0])
-compl_placebo <- coxph(Surv(Y, event) ~ Z, data = dat[(Z == 1 & S1 == 0) | Z == 0])
+naive <- coxph(Surv(Y, event) ~ Z, 
+               data = dat[(Z == 1 & S1 == 1) | Z == 0])
+compl_placebo <- coxph(Surv(Y, event) ~ Z, 
+                       data = dat[(Z == 1 & S1 == 0) | Z == 0])
 prettyCox(naive)
 prettyCox(compl_placebo)
 ```
@@ -229,8 +235,10 @@ in a regression model. Validity of this approach relies on correctly
 specifying the regression model.
 
 ```{r Regression adjustment, echo = TRUE}
-reg_adj <- coxph(Surv(Y, event) ~ Z + X, data = dat[(Z == 1 & S1 == 1) | Z == 0])
-reg_adj2 <- coxph(Surv(Y, event) ~ Z + X, data = dat[(Z == 1 & S1 == 0) | Z == 0])
+reg_adj <- coxph(Surv(Y, event) ~ Z + X, 
+                 data = dat[(Z == 1 & S1 == 1) | Z == 0])
+reg_adj2 <- coxph(Surv(Y, event) ~ Z + X, 
+                  data = dat[(Z == 1 & S1 == 0) | Z == 0])
 prettyCox(reg_adj)
 prettyCox(reg_adj2)
 ```
@@ -238,7 +246,7 @@ prettyCox(reg_adj2)
 ## Weighting
 
 A slightly more complex estimation approach that does not make a
-parametric assumption on how to adjust for the confounder X (but an
+parametric assumption on how to adjust for the confounder $X$ (but an
 assumption on how $S(1)$ and X are related) is to
 utilize a weighting or multiple imputation approach.
 
@@ -271,7 +279,8 @@ curve(fit1(x), 0, 30, lwd = 2, ylim = c(0, 1), xlab = "Time (Months)",
 curve(fit0(x), add = TRUE, col = 2, lwd = 2)
 curve(fit0_2(x), add = TRUE, col = 3, lwd = 2)
 legend("topright", legend = c("Z = 1, S(1) = 1", 
-                              "Z = 0 (weighted by P(S(1) = 1))", "Z = 0 (all)"),
+                              "Z = 0 (weighted by P(S(1) = 1))", 
+                              "Z = 0 (all)"),
        col = 1:3, lwd = 2)
 
 ## treatment effect in complement
@@ -332,12 +341,12 @@ Multiple imputation point estimate is similar to weighting, but now with larger 
 ```{r Summary estimates, echo = TRUE}
 approach <- c("Truth", "Naive", "Regression adjustment", "Weighting", 
               "Multiple imputation")
-est <- c(coef(truth_S1)[1], coef(naive)[1], coef(reg_adj)[1], coef(weighting), 
-         mi[1])
+est <- c(coef(truth_S1)[1], coef(naive)[1], coef(reg_adj)[1], 
+         coef(weighting), mi[1])
 se <- c(NA, sqrt(vcov(naive)), sqrt(vcov(reg_adj)[1, 1]), 
         sqrt(vcov(weighting)[1, 1]), mi[3])
-tab <- data.table(approach = approach, estimate = round(est, 3), se = round(se, 3), 
-                  "hazard ratio" = round(exp(est), 3))
+tab <- data.table(approach = approach, estimate = round(est, 3), 
+                  se = round(se, 3), "hazard ratio" = round(exp(est), 3))
 kable(tab)
 ```
 
@@ -384,8 +393,8 @@ nSim <- 500
 loghr <- matrix(nrow = nSim, ncol = 2)
 hr <- numeric(nSim)
 for(i in 1:nSim){
-  pp <- rbeta(1, sm + 1 / 3, n1 - sm + 1 / 3) ## sample from posterior for P(S1 = 1) 
-                                              ## with uniformative prior
+  ## sample from posterior for P(S1 = 1) with uniformative prior
+  pp <- rbeta(1, sm + 1 / 3, n1 - sm + 1 / 3) 
   
   ## now randomly pick who would have S(1) = 1 in the control group to
   ## efficiently explore also "extreme" allocations sometimes favor
@@ -418,7 +427,9 @@ plot(hr, loghr[,1], ylim = range(loghr), pch = 19,
 abline(h = 0, lty = 2)
 points(hr, loghr[, 1], col = "black", pch = 19)
 points(hr, loghr[, 2], col = "red", pch = 19)
-abline(h = coef(fitoverall), lwd = 2, col = "blue") ## overall treatment effect
+
+## overall treatment effect
+abline(h = coef(fitoverall), lwd = 2, col = "blue") 
 legend("bottomleft", c("S(1) = 1", "S(1) = 0", "Overall"), 
        col = c("black", "red", "blue"),
        pch = c(19, 19, -1), lwd = c(-1, -1, 2), title = "Population", bg = "white")
