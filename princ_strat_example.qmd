@@ -15,7 +15,9 @@ bibliography: biblio.bib
 
 # Purpose
 
-This document accompanies @bornkamp_21. The preprint is @bornkamp_20 and the accompanying github repository is available [here](https://github.com/oncoestimand/princ_strat_drug_dev). It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.
+This document accompanies @bornkamp_21. The preprint is @bornkamp_20 and the accompanying github repository is available [here](https://github.com/oncoestimand/princ_strat_drug_dev). It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. @wang_23 provide further discussion of a sensitivity analysis for the principal ignorability assumption via multiple imputation.
+
+In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.
 
 # Setup
 
@@ -373,7 +375,7 @@ $Y(0)$. Then we plot the HR of $S(1)$ on $Y(0)$ versus log(HR) in the subgroup o
 
 The idea of this analysis is as follows:
 
-+ Go randomly through different ways of assigning $S(1)$ to the control patients, so that the overall proportion of S(1) = 1 is similar to the treatment arm. 
++ Go randomly through different ways of assigning $S(1)$ to the control patients, so that the overall proportion of $S(1) = 1$ is similar to the treatment arm. 
 + For each allocation we can calculate the HR of $S(1) = 1$ vs $S(1) = 0$ on the control arm. 
 + Plot the log(HR) of treatment in $S(1) = 1$ and $S(1) = 0$ against the HR of $S(1) = 1$ vs $S(1) = 0$ on the control arm.
 
@@ -442,5 +444,7 @@ $S(1)$ impacts $Y(0)$. The observed impact of $S(1)$ on $Y(1)$
 speculate that the impact of $S(1)$ on $Y(0)$ would be smaller than
 that. In this area from 0 to 0.28 one can still see that one would
 observe a benefit for the treatment group in the subgroup with $S(1)=1$.
+
+@wang_23 provide further discussion of a sensitivity analysis for the principal ignorability assumption via multiple imputation
 
 # References
