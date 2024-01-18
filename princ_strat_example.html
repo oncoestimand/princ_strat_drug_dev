@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Björn Bornkamp and Kaspar Rufibach">
-<meta name="dcterms.date" content="2023-08-14">
+<meta name="dcterms.date" content="2024-01-18">
 
 <title>Code examples for methodologies presented</title>
 <style>
@@ -149,7 +149,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 14, 2023</p>
+      <p class="date">January 18, 2024</p>
     </div>
   </div>
   
@@ -161,7 +161,7 @@ div.csl-indent {
 
 <section id="purpose" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Purpose</h1>
-<p>This document accompanies <span class="citation" data-cites="bornkamp_21">B. örn Bornkamp et al. (<a href="#ref-bornkamp_21" role="doc-biblioref">2021</a>)</span>. The preprint is <span class="citation" data-cites="bornkamp_20">B. Bornkamp et al. (<a href="#ref-bornkamp_20" role="doc-biblioref">2020</a>)</span> and the accompanying github repository is available <a href="https://github.com/oncoestimand/princ_strat_drug_dev">here</a>. It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. <span class="citation" data-cites="wang_23">Wang et al. (<a href="#ref-wang_23" role="doc-biblioref">2023</a>)</span> provide further discussion of a sensitivity analysis for the principal ignorability assumption via multiple imputation.</p>
+<p>This document accompanies <span class="citation" data-cites="bornkamp_21">Bjoern Bornkamp et al. (<a href="#ref-bornkamp_21" role="doc-biblioref">2021</a>)</span>. The preprint is <span class="citation" data-cites="bornkamp_20">B. Bornkamp et al. (<a href="#ref-bornkamp_20" role="doc-biblioref">2020</a>)</span> and the accompanying github repository is available <a href="https://github.com/oncoestimand/princ_strat_drug_dev">here</a>. It provides an implementation of different analysis methods for principal stratum estimands motivated by the principal ignorability assumption. In addition an idea for a sensitivity analysis is proposed. <span class="citation" data-cites="wang_23">Wang et al. (<a href="#ref-wang_23" role="doc-biblioref">2023</a>)</span> provide further discussion of a sensitivity analysis for the principal ignorability assumption via multiple imputation.</p>
 <p>In this document we focus on a time-to-event endpoint as they are currently mostly performed (i.e., based on the Cox model). Some of the analyses presented here would be easier to perform and/or interpret when using linear and collapsible summary measures like the difference in restricted mean survival time.</p>
 </section>
 <section id="setup" class="level1" data-number="2">
@@ -781,7 +781,7 @@ S1    1   2   3   4
 </section>
 <section id="sensitivity-analysis" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Sensitivity analysis</h1>
-<p>As discussed in <span class="citation" data-cites="bornkamp_21">B. örn Bornkamp et al. (<a href="#ref-bornkamp_21" role="doc-biblioref">2021</a>)</span>, the principal ignorability assumption is unverifiable. In this section we propose a sensitivity analysis. The essential information missing for the analysis of interest is how <span class="math inline">\(Y(0) | S(1) = 1\)</span> and <span class="math inline">\(Y(0) | S(1) = 0\)</span> are related to each other, i.e.&nbsp;what impact does <span class="math inline">\(S(1)\)</span> have on <span class="math inline">\(Y(0)\)</span>. As <span class="math inline">\(S(1)\)</span> and <span class="math inline">\(Y(0)\)</span> are not jointly observed this is unknown.</p>
+<p>As discussed in <span class="citation" data-cites="bornkamp_21">Bjoern Bornkamp et al. (<a href="#ref-bornkamp_21" role="doc-biblioref">2021</a>)</span>, the principal ignorability assumption is unverifiable. In this section we propose a sensitivity analysis. The essential information missing for the analysis of interest is how <span class="math inline">\(Y(0) | S(1) = 1\)</span> and <span class="math inline">\(Y(0) | S(1) = 0\)</span> are related to each other, i.e.&nbsp;what impact does <span class="math inline">\(S(1)\)</span> have on <span class="math inline">\(Y(0)\)</span>. As <span class="math inline">\(S(1)\)</span> and <span class="math inline">\(Y(0)\)</span> are not jointly observed this is unknown.</p>
 <p>Here we propose a sensitivity analysis where we impute <span class="math inline">\(S(1)\)</span> on the placebo arm. This will result in a specific HR quantifiying the effect that <span class="math inline">\(S(1)\)</span> might have on <span class="math inline">\(Y(0)\)</span>. Then we plot the HR of <span class="math inline">\(S(1)\)</span> on <span class="math inline">\(Y(0)\)</span> versus log(HR) in the subgroup of interest.</p>
 <p>The idea of this analysis is as follows:</p>
 <ul>
@@ -858,7 +858,7 @@ S1    1   2   3   4
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">7 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-bornkamp_21" class="csl-entry" role="listitem">
-Bornkamp, Bj örn, Kaspar Rufibach, Jianchang Lin, Yi Liu, Devan V. Mehrotra, Satrajit Roychoudhury, Heinz Schmidli, Yue Shentu, and Marcel Wolbers. 2021. <span>“Principal Stratum Strategy: Potential Role in Drug Development.”</span> <em>Pharmaceutical Statistics</em> 20 (4): 737–51. <a href="https://doi.org/10.1002/pst.2104">https://doi.org/10.1002/pst.2104</a>.
+Bornkamp, Bjoern, Kaspar Rufibach, Jianchang Lin, Yi Liu, Devan V. Mehrotra, Satrajit Roychoudhury, Heinz Schmidli, Yue Shentu, and Marcel Wolbers. 2021. <span>“Principal Stratum Strategy: Potential Role in Drug Development.”</span> <em>Pharmaceutical Statistics</em> 20 (4): 737–51. <a href="https://doi.org/10.1002/pst.2104">https://doi.org/10.1002/pst.2104</a>.
 </div>
 <div id="ref-bornkamp_20" class="csl-entry" role="listitem">
 Bornkamp, B., K. Rufibach, J. Lin, Y. Liu, D. Mehrotra, S. Roychoudhury, H. Schmidli, Y. Shentu, and M. Wolbers. 2020. <span>“Principal Stratum Strategy: Potential Role in Drug Development.”</span> Industry Working Group "Estimands in Oncology". <a href="https://arxiv.org/abs/2008.05406">https://arxiv.org/abs/2008.05406</a>.
