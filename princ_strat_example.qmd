@@ -21,7 +21,9 @@ In this document we focus on a time-to-event endpoint as they are currently most
 
 # Setup
 
-```{r setup, results="hide", message=FALSE}
+Load packages and define a function to prettify output.
+
+```{r setup, echo = TRUE, results="hide", message=FALSE}
 knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
 
 # --------------------------------------------------------------
